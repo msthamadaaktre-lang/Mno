@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Mini App</title>
+
+    <!-- ১. TADS SDK Script -->
+    <script src="https://w.tads.me/widget.js"></script>
+</head>
+<body>
+
+    <div style="text-align: center; padding: 20px;">
+        <h2>Welcome to My Mini App</h2>
+    </div>
+
+    <!-- ২. TADS Ad Container -->
+    <div id="tads-container-12506"></div>
+
+    <!-- ৩. TADS Ad Initialization -->
+    <script>
+      const adsNotFoundCallback = () => {
+        console.log('No ads found to show');
+      };
+
+      const onClickRewardCallback = (adId) => {
+        console.log('Clicked ad:', adId);
+      };
+
+      const adController = window.tads.init({
+        widgetId: 12506,
+        type: 'static',
+        debug: false,
+        onClickReward: onClickRewardCallback,
+        onAdsNotFound: adsNotFoundCallback
+      });
+
+      adController.loadAd()
+        .then(() => adController.showAd())
+        .catch((err) => {
+          console.log(err);
+          adsNotFoundCallback();
+        });
+    </script>
+</body>
+</html>
