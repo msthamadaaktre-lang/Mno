@@ -5,42 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Mini App</title>
 
-    <!-- ১. TADS SDK Script -->
+    <!-- TADS SDK Script -->
     <script src="https://w.tads.me/widget.js"></script>
 </head>
-<body>
 
-    <div style="text-align: center; padding: 20px;">
-        <h2>Welcome to My Mini App</h2>
-    </div>
+<body style="text-align: center; font-family: sans-serif; padding-top: 50px;">
 
-    <!-- ২. TADS Ad Container -->
-    <div id="tads-container-12506"></div>
+    <h2>Welcome to My Mini App</h2>
+    <p>নিচের বাটনে চাপ দিয়ে এড দেখুন:</p>
 
-    <!-- ৩. TADS Ad Initialization -->
+    <!-- Ad Show Button -->
+    <button onclick="showTadsAd()" style="padding: 12px 24px; font-size: 16px; background-color: #0088cc; color: white; border: none; border-radius: 8px; cursor: pointer;">
+        Watch Ad
+    </button>
+
+    <!-- TADS Ad Container -->
+    <div id="tads-container-12506" style="margin-top: 30px;"></div>
+
     <script>
-      const adsNotFoundCallback = () => {
-        console.log('No ads found to show');
+      let adController;
+
+      window.onload = function() {
+        if (window.tads) {
+          adController = window.tads.init({
+            widgetId: 12506,
+            type: 'static',
+            debug: true,
+            onClickReward: (adId) => console.log('Ad Clicked:', adId),
+            onAdsNotFound: () => alert('বর্তমানে কোনো বিজ্ঞাপন ফাঁকা নেই, কিছুক্ষণ পর চেষ্টা করুন!')
+          });
+
+          adController.loadAd()
+            .then(() => adController.showAd())
+            .catch((err) => console.log("Ad Error:", err));
+        }
       };
 
-      const onClickRewardCallback = (adId) => {
-        console.log('Clicked ad:', adId);
-      };
-
-      const adController = window.tads.init({
-        widgetId: 12506,
-        type: 'static',
-        debug: false,
-        onClickReward: onClickRewardCallback,
-        onAdsNotFound: adsNotFoundCallback
-      });
-
-      adController.loadAd()
-        .then(() => adController.showAd())
-        .catch((err) => {
-          console.log(err);
-          adsNotFoundCallback();
-        });
+      function showTadsAd() {
+        if (adController) {
+          adController.showAd();
+        } else {
+          alert("অ্যাড লোড হচ্ছে, একটু অপেক্ষা করুন...");
+        }
+      }
     </script>
+
 </body>
 </html>
